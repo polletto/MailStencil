@@ -1,13 +1,18 @@
 # MailStencil
 
+[![CI](https://github.com/polletto/MailStencil/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/polletto/MailStencil/actions/workflows/ci.yml)
+[![NuGet prerelease](https://img.shields.io/nuget/vpre/MailStencil.Core.svg)](https://www.nuget.org/packages/MailStencil.Core)
+[![License: MIT](https://img.shields.io/github/license/polletto/MailStencil.svg)](LICENSE)
+[![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+
 **Storage-agnostic, strongly typed email templates for .NET.**
 
 MailStencil is an email-template library for .NET 10. It separates
 template storage, static validation, rendering, and runtime orchestration so applications can choose a
 read-only FileSystem or Azure Blob source without coupling model contracts to storage.
 
-The `0.1.0-preview.1` packages are a release candidate and have not been published to NuGet.org.
-APIs may still evolve before 1.0. MailStencil renders template content; it does **not** send email.
+`0.1.0-preview.1` is available on NuGet.org. This is a preview release, and APIs may still evolve before
+1.0. MailStencil renders template content; it does **not** send email.
 
 The runtime pipeline is:
 
@@ -20,16 +25,16 @@ request.
 
 ## Packages
 
-| Package | Purpose |
-| --- | --- |
-| `MailStencil.Core` | Public contracts, DI, culture fallback, and positive in-memory source caching |
-| `MailStencil.Scriban` | Bounded Scriban rendering and static AST validation |
-| `MailStencil.FileSystem` | Restrictive read-only UTF-8 filesystem provider |
-| `MailStencil.AzureBlob` | Read-only Azure Blob provider using an application-owned SDK client |
+| Package | Purpose | NuGet |
+| --- | --- | --- |
+| `MailStencil.Core` | Public contracts, DI, culture fallback, and positive in-memory source caching | [NuGet.org](https://www.nuget.org/packages/MailStencil.Core) |
+| `MailStencil.Scriban` | Bounded Scriban rendering and static AST validation | [NuGet.org](https://www.nuget.org/packages/MailStencil.Scriban) |
+| `MailStencil.FileSystem` | Restrictive read-only UTF-8 filesystem provider | [NuGet.org](https://www.nuget.org/packages/MailStencil.FileSystem) |
+| `MailStencil.AzureBlob` | Read-only Azure Blob provider using an application-owned SDK client | [NuGet.org](https://www.nuget.org/packages/MailStencil.AzureBlob) |
 
 ## Installation
 
-The packages are not published yet. These are the intended commands after publication. For FileSystem:
+Install the packages from NuGet.org. For FileSystem:
 
 ```sh
 dotnet add package MailStencil.Core --version 0.1.0-preview.1
