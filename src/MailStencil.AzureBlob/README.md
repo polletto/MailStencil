@@ -17,3 +17,6 @@ The blob path is `<prefix>/<name>/<culture-or-default>/template.json`. The JSON 
 `formatVersion`, `subject`, optional `htmlBody`, and optional `textBody`. Only Azure's exact
 `BlobNotFound` condition returns `null`; authentication, authorization, throttling, container absence,
 network, and other service failures remain Azure SDK exceptions.
+
+See the [MailStencil repository](https://github.com/polletto/MailStencil) for the JSON format,
+localization behavior, security limits, and Azurite test instructions.

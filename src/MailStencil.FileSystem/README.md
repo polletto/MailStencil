@@ -3,7 +3,7 @@
 An exact, read-only UTF-8 template reader. References MailStencil.Core only.
 
 ```csharp
-services.AddMailStencil().AddFileSystemTemplateReader(options =>
+services.AddMailStencil().AddScribanRenderer().AddFileSystemTemplateReader(options =>
 {
     options.BasePath = "./templates";
     // options.MaxTemplateFileSize = 128 * 1024; // default bytes per part, including BOM
@@ -23,3 +23,6 @@ every hostile filesystem race or a transactional multipart snapshot.
 The provider accepts only restrictive logical name/culture segments and rejects links/reparse points.
 The configured base tree must still be controlled by the application: portable path checks are not an
 OS-handle-level sandbox and cannot guarantee a transactional snapshot against hostile writers.
+
+See the [MailStencil repository](https://github.com/polletto/MailStencil) for the full runtime example,
+localization behavior, and security limits.

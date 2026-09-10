@@ -19,14 +19,15 @@ package contents and changelog are final; the intended first tag is `v0.1.0-prev
 
 No publishing workflow is included in this milestone. Before publishing, the owner must:
 
-1. choose and commit the project license, then set matching NuGet license metadata;
-2. create the public repository and set its real project/repository URLs;
-3. update `SECURITY.md` with the verified private reporting route;
-4. recheck package-ID ownership immediately before the first push;
-5. create a protected GitHub environment for release approval;
-6. configure NuGet.org trusted publishing for the exact owner, repository, workflow, and environment;
-7. grant `id-token: write` only to the publication job and exchange OIDC for a short-lived NuGet key
+1. confirm the repository's private vulnerability-reporting route and update `SECURITY.md` if needed;
+2. recheck package-ID ownership immediately before the first push;
+3. create a protected GitHub environment for release approval;
+4. configure NuGet.org trusted publishing for the exact owner, repository, workflow, and environment;
+5. grant `id-token: write` only to the publication job and exchange OIDC for a short-lived NuGet key
    immediately before `dotnet nuget push`;
-8. publish immutable CI artifacts and never store a long-lived NuGet API key.
+6. publish immutable CI artifacts and never store a long-lived NuGet API key.
+
+The repository URL is `https://github.com/polletto/MailStencil`, and packages use the MIT license expression
+corresponding to the root `LICENSE` file.
 
 The normal CI and package jobs are intentionally nonpublishing and use read-only repository permissions.
