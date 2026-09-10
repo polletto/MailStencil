@@ -8,10 +8,10 @@ development branch. A supported-version table will be added when packages are re
 ## Reporting a vulnerability
 
 Do not place vulnerability details, credentials, template/model contents, filesystem paths, blob URIs, or
-SAS tokens in a public issue. Use the repository's
-[private security-advisory form](https://github.com/polletto/MailStencil/security/advisories/new). If private
-reporting is unavailable, open a minimal issue asking the maintainers to provide a private contact method
-without disclosing the vulnerability.
+SAS tokens in a public issue. If GitHub private vulnerability reporting is enabled for this repository, use
+the [private security-advisory form](https://github.com/polletto/MailStencil/security/advisories/new).
+Otherwise, open a minimal issue asking the maintainers to provide a private contact method without
+disclosing the vulnerability.
 
 Include the affected package/version, impact, minimal reproduction, and any known workaround. Report
 secrets only after a maintainer confirms an appropriate secure channel.

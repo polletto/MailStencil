@@ -1,0 +1,99 @@
+name: Publish NuGet packages
+
+on:
+  push:
+    tags:
+      - 'v0.1.0-preview.1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Build and verify tagged packages
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+      - name: Require tag on current main commit
+        shell: bash
+        run: |
+          git fetch --no-tags origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+      - run: dotnet restore
+      - run: dotnet build -c Release --no-restore
+      - run: dotnet test -c Release --no-build --no-restore
+      - name: Audit known vulnerabilities
+        run: dotnet package list --vulnerable --include-transitive
+      - name: Guard compiled public API
+        run: dotnet run --project eng/MailStencil.PublicApiGuard -c Release --no-build -- eng/PublicApiBaseline.txt
+      - name: Pack tagged version
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          test "$version" = "0.1.0-preview.1"
+          mkdir -p artifacts/packages
+          for project in \
+            src/MailStencil.Core/MailStencil.Core.csproj \
+            src/MailStencil.Scriban/MailStencil.Scriban.csproj \
+            src/MailStencil.FileSystem/MailStencil.FileSystem.csproj \
+            src/MailStencil.AzureBlob/MailStencil.AzureBlob.csproj; do
+            dotnet pack "$project" -c Release --no-build --no-restore \
+              -p:Version="$version" -o artifacts/packages
+          done
+      - name: Inspect packages and run package-only consumers
+        shell: pwsh
+        run: ./eng/Verify-Packages.ps1 -PackagesPath artifacts/packages -Version 0.1.0-preview.1 -ExpectedSourceRevision ${{ github.sha }}
+      - name: Upload immutable tagged artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: MailStencil-${{ github.ref_name }}-${{ github.sha }}
+          path: |
+            artifacts/packages/*.nupkg
+            artifacts/packages/*.snupkg
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish verified packages
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download tagged artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: MailStencil-${{ github.ref_name }}-${{ github.sha }}
+          path: artifacts/packages
+      - name: Require configured NuGet account
+        shell: bash
+        env:
+          NUGET_USER: ${{ vars.NUGET_USER }}
+        run: test -n "$NUGET_USER"
+      - name: Exchange OIDC token for a short-lived NuGet API key
+        id: nuget-login
+        uses: NuGet/login@d22cc5f58ff5b88bf9bd452535b4335137e24544 # v1.1.0
+        with:
+          user: ${{ vars.NUGET_USER }}
+      - name: Publish packages
+        shell: bash
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+        run: |
+          for package in artifacts/packages/*.nupkg; do
+            dotnet nuget push "$package" --api-key "$NUGET_API_KEY" \
+              --source https://api.nuget.org/v3/index.json --skip-duplicate
+          done

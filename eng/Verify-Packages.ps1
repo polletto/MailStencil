@@ -3,7 +3,10 @@ param(
     [string] $PackagesPath,
 
     [Parameter(Mandatory = $false)]
-    [string] $Version = "0.1.0-preview.1"
+    [string] $Version = "0.1.0-preview.1",
+
+    [Parameter(Mandatory = $false)]
+    [string] $ExpectedSourceRevision
 )
 
 $ErrorActionPreference = "Stop"
@@ -67,6 +70,9 @@ foreach ($id in $ids) {
         if ($metadata.repository.type -ne "git" -or $metadata.repository.url -ne $repositoryUrl) {
             throw "$id package has unexpected repository metadata"
         }
+        if ($ExpectedSourceRevision -and $metadata.repository.commit -cne $ExpectedSourceRevision) {
+            throw "$id package repository commit '$($metadata.repository.commit)' does not match '$ExpectedSourceRevision'"
+        }
 
         $dependencies = @($nuspec.SelectNodes("/n:package/n:metadata/n:dependencies/n:group/n:dependency", $namespace))
         $actualIds = @($dependencies | ForEach-Object id | Sort-Object)
@@ -122,6 +128,15 @@ foreach ($id in $ids) {
             }
             if ($sourceLink -notmatch '"/_/\*":"https://raw\.githubusercontent\.com/polletto/MailStencil/[0-9a-f]{40}/\*"') {
                 throw "$id symbol package has missing, local-path, or unexpected Source Link metadata"
+            }
+            if ($ExpectedSourceRevision) {
+                $sourceRevision = [regex]::Match(
+                    $sourceLink,
+                    'raw\.githubusercontent\.com/polletto/MailStencil/([0-9a-f]{40})/'
+                ).Groups[1].Value
+                if ($sourceRevision -cne $ExpectedSourceRevision) {
+                    throw "$id Source Link revision '$sourceRevision' does not match '$ExpectedSourceRevision'"
+                }
             }
         }
         finally {
