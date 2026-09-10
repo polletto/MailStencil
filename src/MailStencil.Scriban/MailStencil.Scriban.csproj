@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>MailStencil.Scriban</PackageId>
+    <Title>MailStencil Scriban Renderer</Title>
+    <Description>Safe, bounded Scriban rendering and static validation for MailStencil email templates on .NET 10.</Description>
+    <PackageTags>$(PackageTags);scriban;rendering;validation</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../MailStencil.Core/MailStencil.Core.csproj" />
+    <PackageReference Include="Scriban" Version="7.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

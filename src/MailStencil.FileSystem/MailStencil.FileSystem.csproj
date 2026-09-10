@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>MailStencil.FileSystem</PackageId>
+    <Title>MailStencil FileSystem Provider</Title>
+    <Description>Restrictive, read-only filesystem template storage for MailStencil on .NET 10.</Description>
+    <PackageTags>$(PackageTags);filesystem;storage;provider</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../MailStencil.Core/MailStencil.Core.csproj" />
+    <InternalsVisibleTo Include="MailStencil.FileSystem.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/MailStencil.Core/MailStencil.Core.csproj" />
+    <ProjectReference Include="../../src/MailStencil.Scriban/MailStencil.Scriban.csproj" />
+    <ProjectReference Include="../../src/MailStencil.FileSystem/MailStencil.FileSystem.csproj" />
+    <ProjectReference Include="../../src/MailStencil.AzureBlob/MailStencil.AzureBlob.csproj" />
+  </ItemGroup>
+</Project>

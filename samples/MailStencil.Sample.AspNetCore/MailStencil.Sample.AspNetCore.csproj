@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/MailStencil.Core/MailStencil.Core.csproj" />
+    <ProjectReference Include="../../src/MailStencil.Scriban/MailStencil.Scriban.csproj" />
+    <ProjectReference Include="../../src/MailStencil.FileSystem/MailStencil.FileSystem.csproj" />
+    <ProjectReference Include="../../src/MailStencil.AzureBlob/MailStencil.AzureBlob.csproj" />
+    <Content Include="Templates/**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

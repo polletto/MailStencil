@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+      - run: dotnet restore
+      - run: dotnet build -c Release --no-restore
+      - run: dotnet test -c Release --no-build --no-restore
+
+  package:
+    name: Inspect release-candidate packages
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+      - run: dotnet restore
+      - run: dotnet build -c Release --no-restore
+      - run: dotnet test -c Release --no-build --no-restore
+      - name: Audit known vulnerabilities
+        run: dotnet package list --vulnerable --include-transitive
+      - name: Guard compiled public API
+        run: dotnet run --project eng/MailStencil.PublicApiGuard -c Release --no-build -- eng/PublicApiBaseline.txt
+      - name: Pack runtime libraries
+        shell: bash
+        run: |
+          mkdir -p artifacts/packages
+          for project in \
+            src/MailStencil.Core/MailStencil.Core.csproj \
+            src/MailStencil.Scriban/MailStencil.Scriban.csproj \
+            src/MailStencil.FileSystem/MailStencil.FileSystem.csproj \
+            src/MailStencil.AzureBlob/MailStencil.AzureBlob.csproj; do
+            dotnet pack "$project" -c Release --no-build --no-restore \
+              -p:Version=0.1.0-preview.1 -o artifacts/packages
+          done
+      - name: Inspect packages and run package-only consumers
+        shell: pwsh
+        run: ./eng/Verify-Packages.ps1 -PackagesPath artifacts/packages -Version 0.1.0-preview.1
+      - name: Upload release-candidate artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: MailStencil-0.1.0-preview.1
+          path: |
+            artifacts/packages/*.nupkg
+            artifacts/packages/*.snupkg
+          if-no-files-found: error

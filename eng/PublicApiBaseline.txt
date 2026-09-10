@@ -1,0 +1,115 @@
+C|MailStencil.AzureBlob.AzureBlobTemplateException|(MailStencil.TemplateRequest request,System.String message,System.Exception innerException=null)
+C|MailStencil.AzureBlob.AzureBlobTemplateOptions|()
+C|MailStencil.EmailTemplateContent|(System.String subject,System.String htmlBody=null,System.String textBody=null)
+C|MailStencil.EmailTemplateSource|(MailStencil.TemplateRequest request,MailStencil.EmailTemplateContent content,MailStencil.TemplateMetadata metadata=null)
+C|MailStencil.FileSystem.FileSystemTemplateException|(MailStencil.TemplateRequest request,System.String message,System.Exception innerException=null)
+C|MailStencil.FileSystem.FileSystemTemplateOptions|()
+C|MailStencil.MailStencilOptions|()
+C|MailStencil.RenderedEmailTemplate|(System.String subject,System.String htmlBody=null,System.String textBody=null)
+C|MailStencil.TemplateDiagnostic|(MailStencil.TemplateComponent Component,MailStencil.TemplateDiagnosticSeverity Severity,System.String Code,System.String Message,MailStencil.TemplateSourceSpan Span=null,System.String Member=null)
+C|MailStencil.TemplateMetadata|()
+C|MailStencil.TemplateNotFoundException|(MailStencil.TemplateRequest request)
+C|MailStencil.TemplateRenderingException|(MailStencil.TemplateDiagnostic diagnostic,System.Exception innerException=null)
+C|MailStencil.TemplateRequest|(System.String name,System.String culture=null,System.String version=null)
+C|MailStencil.TemplateSourceSpan|(System.Int32 Offset,System.Int32 Length,System.Int32 Line,System.Int32 Column)
+C|MailStencil.TemplateValidationException|(MailStencil.TemplateValidationResult validationResult)
+C|MailStencil.TemplateValidationResult|(System.Collections.Generic.IEnumerable<MailStencil.TemplateDiagnostic> diagnostics)
+F|MailStencil.TemplateComponent|General|MailStencil.TemplateComponent|const=3
+F|MailStencil.TemplateComponent|HtmlBody|MailStencil.TemplateComponent|const=1
+F|MailStencil.TemplateComponent|Subject|MailStencil.TemplateComponent|const=0
+F|MailStencil.TemplateComponent|TextBody|MailStencil.TemplateComponent|const=2
+F|MailStencil.TemplateComponent|value__|System.Int32|const=
+F|MailStencil.TemplateDiagnosticSeverity|Error|MailStencil.TemplateDiagnosticSeverity|const=1
+F|MailStencil.TemplateDiagnosticSeverity|Warning|MailStencil.TemplateDiagnosticSeverity|const=0
+F|MailStencil.TemplateDiagnosticSeverity|value__|System.Int32|const=
+M|MailStencil.IEmailTemplateService|RenderAsync`1<TModel:>|(MailStencil.TemplateRequest request,TModel model,System.Threading.CancellationToken cancellationToken=null)->System.Threading.Tasks.Task<MailStencil.RenderedEmailTemplate>
+M|MailStencil.IEmailTemplateService|RenderAsync`1<TModel:>|(System.String name,TModel model,System.Threading.CancellationToken cancellationToken=null)->System.Threading.Tasks.Task<MailStencil.RenderedEmailTemplate>
+M|MailStencil.ITemplateReader|GetAsync|(MailStencil.TemplateRequest request,System.Threading.CancellationToken cancellationToken=null)->System.Threading.Tasks.Task<MailStencil.EmailTemplateSource>
+M|MailStencil.ITemplateRenderer|RenderAsync`1<TModel:>|(MailStencil.EmailTemplateContent content,TModel model,System.Globalization.CultureInfo culture,System.Threading.CancellationToken cancellationToken=null)->System.Threading.Tasks.Task<MailStencil.RenderedEmailTemplate>
+M|MailStencil.ITemplateValidator|ValidateAsync`1<TModel:>|(MailStencil.EmailTemplateContent content,System.Threading.CancellationToken cancellationToken=null)->System.Threading.Tasks.Task<MailStencil.TemplateValidationResult>
+M|MailStencil.TemplateDiagnostic|<Clone>$|()->MailStencil.TemplateDiagnostic
+M|MailStencil.TemplateDiagnostic|Deconstruct|(MailStencil.TemplateComponent& Component,MailStencil.TemplateDiagnosticSeverity& Severity,System.String& Code,System.String& Message,MailStencil.TemplateSourceSpan& Span,System.String& Member)->System.Void
+M|MailStencil.TemplateDiagnostic|Equals|(MailStencil.TemplateDiagnostic other)->System.Boolean
+M|MailStencil.TemplateDiagnostic|Equals|(System.Object obj)->System.Boolean
+M|MailStencil.TemplateDiagnostic|GetHashCode|()->System.Int32
+M|MailStencil.TemplateDiagnostic|ToString|()->System.String
+M|MailStencil.TemplateRequest|<Clone>$|()->MailStencil.TemplateRequest
+M|MailStencil.TemplateRequest|Equals|(MailStencil.TemplateRequest other)->System.Boolean
+M|MailStencil.TemplateRequest|Equals|(System.Object obj)->System.Boolean
+M|MailStencil.TemplateRequest|GetHashCode|()->System.Int32
+M|MailStencil.TemplateRequest|ToString|()->System.String
+M|MailStencil.TemplateSourceSpan|<Clone>$|()->MailStencil.TemplateSourceSpan
+M|MailStencil.TemplateSourceSpan|Deconstruct|(System.Int32& Offset,System.Int32& Length,System.Int32& Line,System.Int32& Column)->System.Void
+M|MailStencil.TemplateSourceSpan|Equals|(MailStencil.TemplateSourceSpan other)->System.Boolean
+M|MailStencil.TemplateSourceSpan|Equals|(System.Object obj)->System.Boolean
+M|MailStencil.TemplateSourceSpan|GetHashCode|()->System.Int32
+M|MailStencil.TemplateSourceSpan|ToString|()->System.String
+M|Microsoft.Extensions.DependencyInjection.MailStencilAzureBlobServiceCollectionExtensions|static AddAzureBlobTemplateReader|(Microsoft.Extensions.DependencyInjection.IServiceCollection services,System.Action<MailStencil.AzureBlob.AzureBlobTemplateOptions> configure)->Microsoft.Extensions.DependencyInjection.IServiceCollection
+M|Microsoft.Extensions.DependencyInjection.MailStencilFileSystemServiceCollectionExtensions|static AddFileSystemTemplateReader|(Microsoft.Extensions.DependencyInjection.IServiceCollection services,System.Action<MailStencil.FileSystem.FileSystemTemplateOptions> configure)->Microsoft.Extensions.DependencyInjection.IServiceCollection
+M|Microsoft.Extensions.DependencyInjection.MailStencilScribanServiceCollectionExtensions|static AddScribanRenderer|(Microsoft.Extensions.DependencyInjection.IServiceCollection services)->Microsoft.Extensions.DependencyInjection.IServiceCollection
+M|Microsoft.Extensions.DependencyInjection.MailStencilServiceCollectionExtensions|static AddMailStencil|(Microsoft.Extensions.DependencyInjection.IServiceCollection services,System.Action<MailStencil.MailStencilOptions> configure=null)->Microsoft.Extensions.DependencyInjection.IServiceCollection
+P|MailStencil.AzureBlob.AzureBlobTemplateException|Request|MailStencil.TemplateRequest|get=True;set=False
+P|MailStencil.AzureBlob.AzureBlobTemplateOptions|ContainerName|System.String|get=True;set=True
+P|MailStencil.AzureBlob.AzureBlobTemplateOptions|MaxTemplateBlobSize|System.Int32|get=True;set=True
+P|MailStencil.AzureBlob.AzureBlobTemplateOptions|Prefix|System.String|get=True;set=True
+P|MailStencil.EmailTemplateContent|HtmlBody|System.String|get=True;set=False
+P|MailStencil.EmailTemplateContent|Subject|System.String|get=True;set=False
+P|MailStencil.EmailTemplateContent|TextBody|System.String|get=True;set=False
+P|MailStencil.EmailTemplateSource|Content|MailStencil.EmailTemplateContent|get=True;set=False
+P|MailStencil.EmailTemplateSource|Metadata|MailStencil.TemplateMetadata|get=True;set=False
+P|MailStencil.EmailTemplateSource|Request|MailStencil.TemplateRequest|get=True;set=False
+P|MailStencil.FileSystem.FileSystemTemplateException|Request|MailStencil.TemplateRequest|get=True;set=False
+P|MailStencil.FileSystem.FileSystemTemplateOptions|BasePath|System.String|get=True;set=True
+P|MailStencil.FileSystem.FileSystemTemplateOptions|MaxTemplateFileSize|System.Int32|get=True;set=True
+P|MailStencil.MailStencilOptions|CacheDuration|System.TimeSpan|get=True;set=True
+P|MailStencil.MailStencilOptions|DefaultCulture|System.String|get=True;set=True
+P|MailStencil.RenderedEmailTemplate|HtmlBody|System.String|get=True;set=False
+P|MailStencil.RenderedEmailTemplate|Subject|System.String|get=True;set=False
+P|MailStencil.RenderedEmailTemplate|TextBody|System.String|get=True;set=False
+P|MailStencil.TemplateDiagnostic|Code|System.String|get=True;set=True
+P|MailStencil.TemplateDiagnostic|Component|MailStencil.TemplateComponent|get=True;set=True
+P|MailStencil.TemplateDiagnostic|Member|System.String|get=True;set=True
+P|MailStencil.TemplateDiagnostic|Message|System.String|get=True;set=True
+P|MailStencil.TemplateDiagnostic|Severity|MailStencil.TemplateDiagnosticSeverity|get=True;set=True
+P|MailStencil.TemplateDiagnostic|Span|MailStencil.TemplateSourceSpan|get=True;set=True
+P|MailStencil.TemplateMetadata|ETag|System.String|get=True;set=True
+P|MailStencil.TemplateMetadata|LastModified|System.Nullable<System.DateTimeOffset>|get=True;set=True
+P|MailStencil.TemplateMetadata|Version|System.String|get=True;set=True
+P|MailStencil.TemplateNotFoundException|Request|MailStencil.TemplateRequest|get=True;set=False
+P|MailStencil.TemplateRenderingException|Diagnostic|MailStencil.TemplateDiagnostic|get=True;set=False
+P|MailStencil.TemplateRequest|Culture|System.String|get=True;set=False
+P|MailStencil.TemplateRequest|Name|System.String|get=True;set=False
+P|MailStencil.TemplateRequest|Version|System.String|get=True;set=False
+P|MailStencil.TemplateSourceSpan|Column|System.Int32|get=True;set=True
+P|MailStencil.TemplateSourceSpan|Length|System.Int32|get=True;set=True
+P|MailStencil.TemplateSourceSpan|Line|System.Int32|get=True;set=True
+P|MailStencil.TemplateSourceSpan|Offset|System.Int32|get=True;set=True
+P|MailStencil.TemplateValidationException|ValidationResult|MailStencil.TemplateValidationResult|get=True;set=False
+P|MailStencil.TemplateValidationResult|Diagnostics|System.Collections.Generic.IReadOnlyList<MailStencil.TemplateDiagnostic>|get=True;set=False
+P|MailStencil.TemplateValidationResult|IsValid|System.Boolean|get=True;set=False
+T|MailStencil.AzureBlob|MailStencil.AzureBlob.AzureBlobTemplateException|class sealed|base=System.IO.IOException
+T|MailStencil.AzureBlob|MailStencil.AzureBlob.AzureBlobTemplateOptions|class sealed|base=System.Object
+T|MailStencil.AzureBlob|Microsoft.Extensions.DependencyInjection.MailStencilAzureBlobServiceCollectionExtensions|class sealed|base=System.Object
+T|MailStencil.Core|MailStencil.EmailTemplateContent|class sealed|base=System.Object
+T|MailStencil.Core|MailStencil.EmailTemplateSource|class sealed|base=System.Object
+T|MailStencil.Core|MailStencil.IEmailTemplateService|interface|base=null
+T|MailStencil.Core|MailStencil.ITemplateReader|interface|base=null
+T|MailStencil.Core|MailStencil.ITemplateRenderer|interface|base=null
+T|MailStencil.Core|MailStencil.ITemplateValidator|interface|base=null
+T|MailStencil.Core|MailStencil.MailStencilOptions|class sealed|base=System.Object
+T|MailStencil.Core|MailStencil.RenderedEmailTemplate|class sealed|base=System.Object
+T|MailStencil.Core|MailStencil.TemplateComponent|enum sealed|base=System.Enum
+T|MailStencil.Core|MailStencil.TemplateDiagnosticSeverity|enum sealed|base=System.Enum
+T|MailStencil.Core|MailStencil.TemplateDiagnostic|class sealed|base=System.Object
+T|MailStencil.Core|MailStencil.TemplateMetadata|class sealed|base=System.Object
+T|MailStencil.Core|MailStencil.TemplateNotFoundException|class sealed|base=System.Exception
+T|MailStencil.Core|MailStencil.TemplateRenderingException|class sealed|base=System.Exception
+T|MailStencil.Core|MailStencil.TemplateRequest|class sealed|base=System.Object
+T|MailStencil.Core|MailStencil.TemplateSourceSpan|class sealed|base=System.Object
+T|MailStencil.Core|MailStencil.TemplateValidationException|class sealed|base=System.Exception
+T|MailStencil.Core|MailStencil.TemplateValidationResult|class sealed|base=System.Object
+T|MailStencil.Core|Microsoft.Extensions.DependencyInjection.MailStencilServiceCollectionExtensions|class sealed|base=System.Object
+T|MailStencil.FileSystem|MailStencil.FileSystem.FileSystemTemplateException|class sealed|base=System.IO.IOException
+T|MailStencil.FileSystem|MailStencil.FileSystem.FileSystemTemplateOptions|class sealed|base=System.Object
+T|MailStencil.FileSystem|Microsoft.Extensions.DependencyInjection.MailStencilFileSystemServiceCollectionExtensions|class sealed|base=System.Object
+T|MailStencil.Scriban|Microsoft.Extensions.DependencyInjection.MailStencilScribanServiceCollectionExtensions|class sealed|base=System.Object

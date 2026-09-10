@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/MailStencil.Core/MailStencil.Core.csproj" />
+    <ProjectReference Include="../../src/MailStencil.Scriban/MailStencil.Scriban.csproj" />
+    <ProjectReference Include="../../src/MailStencil.FileSystem/MailStencil.FileSystem.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
+    <None Update="templates/**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

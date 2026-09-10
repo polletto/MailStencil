@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>MailStencil.AzureBlob</PackageId>
+    <Title>MailStencil Azure Blob Provider</Title>
+    <Description>Read-only Azure Blob Storage template provider for MailStencil on .NET 10.</Description>
+    <PackageTags>$(PackageTags);azure;blob-storage;storage;provider</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../MailStencil.Core/MailStencil.Core.csproj" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.29.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

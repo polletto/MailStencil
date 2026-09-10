@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>MailStencil.Core</PackageId>
+    <Title>MailStencil Core</Title>
+    <Description>Storage-agnostic contracts, models, dependency injection, culture fallback, and source caching for strongly typed email templates on .NET 10.</Description>
+    <PackageTags>$(PackageTags);dependency-injection;localization</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.11" />
+    <InternalsVisibleTo Include="MailStencil.Core.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>
+

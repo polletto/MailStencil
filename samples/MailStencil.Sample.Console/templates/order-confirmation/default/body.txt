@@ -1,0 +1,2 @@
+Hello {{ customer_name }}
+Order {{ order_number }} totals {{ total }}.
