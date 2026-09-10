@@ -15,6 +15,7 @@
     <Copyright>Copyright (c) 2026 Simone Rossi</Copyright>
     <PackageTags>email;email-templates;templates;dotnet</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>mailstencil-icon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>First public preview candidate of MailStencil's read-only runtime, renderer, and storage providers.</PackageReleaseNotes>
@@ -28,4 +29,9 @@
     <EnablePackageValidation>true</EnablePackageValidation>
     <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)assets/branding/mailstencil-icon.png"
+          Pack="true"
+          PackagePath="\" />
+  </ItemGroup>
 </Project>

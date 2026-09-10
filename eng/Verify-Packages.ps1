@@ -15,6 +15,8 @@ $repository = Split-Path -Parent $PSScriptRoot
 $nugetSource = "https://api.nuget.org/v3/index.json"
 $projectUrl = "https://github.com/polletto/MailStencil"
 $repositoryUrl = "https://github.com/polletto/MailStencil.git"
+$packageIcon = "mailstencil-icon.png"
+$brandingAsset = Join-Path $repository "assets/branding/$packageIcon"
 $sourceLinkKind = [Guid]"CC110556-A091-4D38-9FEC-25AB9A351A6A"
 $ids = @(
     "MailStencil.Core",
@@ -30,6 +32,12 @@ $expectedDependencies = @{
 }
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
+if (-not (Test-Path -LiteralPath $brandingAsset -PathType Leaf)) {
+    throw "Missing shared branding asset $brandingAsset"
+}
+$brandingHash = [Convert]::ToHexString(
+    [Security.Cryptography.SHA256]::HashData([IO.File]::ReadAllBytes($brandingAsset))
+)
 
 foreach ($id in $ids) {
     $nupkg = Join-Path $packages "$id.$Version.nupkg"
@@ -40,8 +48,28 @@ foreach ($id in $ids) {
     $archive = [System.IO.Compression.ZipFile]::OpenRead($nupkg)
     try {
         $names = @($archive.Entries | ForEach-Object FullName)
-        foreach ($required in @("$id.nuspec", "README.md", "lib/net10.0/$id.dll", "lib/net10.0/$id.xml")) {
+        foreach ($required in @("$id.nuspec", "README.md", $packageIcon, "lib/net10.0/$id.dll", "lib/net10.0/$id.xml")) {
             if ($names -notcontains $required) { throw "$id package is missing $required" }
+        }
+
+        $brandingEntries = @($archive.Entries | Where-Object { $_.Name -ieq $packageIcon })
+        if ($brandingEntries.Count -ne 1 -or $brandingEntries[0].FullName -cne $packageIcon) {
+            throw "$id package must contain exactly one $packageIcon at the package root"
+        }
+        $iconStream = $brandingEntries[0].Open()
+        $iconMemory = [IO.MemoryStream]::new()
+        try {
+            $iconStream.CopyTo($iconMemory)
+            $packedIconHash = [Convert]::ToHexString(
+                [Security.Cryptography.SHA256]::HashData($iconMemory.ToArray())
+            )
+        }
+        finally {
+            $iconStream.Dispose()
+            $iconMemory.Dispose()
+        }
+        if ($packedIconHash -cne $brandingHash) {
+            throw "$id package icon does not match the shared branding asset"
         }
 
         $unexpected = @($names | Where-Object {
@@ -63,6 +91,7 @@ foreach ($id in $ids) {
             throw "$id package is missing required descriptive metadata"
         }
         if ($metadata.readme -ne "README.md") { throw "$id package has an unexpected readme path" }
+        if ($metadata.icon -ne $packageIcon) { throw "$id package has an unexpected package icon" }
         if ($metadata.license.type -ne "expression" -or $metadata.license.'#text' -ne "MIT") {
             throw "$id package does not declare the MIT license expression"
         }
