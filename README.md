@@ -1,7 +1,7 @@
 # MailStencil
 
-![MailStencil](assets/branding/mailstencil-logo-light.png#gh-dark-mode-only)
-![MailStencil](assets/branding/mailstencil-logo-dark.png#gh-light-mode-only)
+![MailStencil](assets/branding/mailstencil-logo-light.png#gh-light-mode-only)
+![MailStencil](assets/branding/mailstencil-logo-dark.png#gh-dark-mode-only)
 
 [![CI](https://github.com/polletto/MailStencil/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/polletto/MailStencil/actions/workflows/ci.yml)
 [![NuGet prerelease](https://img.shields.io/nuget/vpre/MailStencil.Core.svg)](https://www.nuget.org/packages/MailStencil.Core)
@@ -209,6 +209,7 @@ exception objects are excluded from MailStencil-generated logs.
 
 ## Documentation and samples
 
+- [Documentation website](https://polletto.github.io/MailStencil/)
 - [Public API](docs/public-api.md)
 - [Architecture, limits, and threat model](docs/architecture.md)
 - [ASP.NET Core usage](docs/aspnet-core.md)

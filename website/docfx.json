@@ -1,0 +1,88 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "rules": {
+    "InvalidFileLink": "error"
+  },
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../src",
+          "files": [
+            "MailStencil.Core/MailStencil.Core.csproj",
+            "MailStencil.Scriban/MailStencil.Scriban.csproj",
+            "MailStencil.FileSystem/MailStencil.FileSystem.csproj",
+            "MailStencil.AzureBlob/MailStencil.AzureBlob.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "properties": {
+        "TargetFramework": "net10.0",
+        "Configuration": "Release"
+      },
+      "disableDefaultFilter": false,
+      "includePrivateMembers": false,
+      "noRestore": true
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "index.md",
+          "toc.yml",
+          "articles/**/*.md"
+        ]
+      },
+      {
+        "src": "../docs",
+        "files": [
+          "architecture.md",
+          "aspnet-core.md",
+          "azurite-testing.md",
+          "public-api.md",
+          "releasing.md"
+        ],
+        "dest": "articles"
+      },
+      {
+        "files": [
+          "api/*.yml"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "src": "../assets/branding",
+        "files": [
+          "mailstencil-icon.png",
+          "mailstencil-logo-light.png",
+          "mailstencil-logo-dark.png"
+        ],
+        "dest": "public"
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern",
+      "template"
+    ],
+    "globalMetadata": {
+      "_appName": "MailStencil",
+      "_appTitle": "MailStencil documentation",
+      "_appLogoPath": "public/mailstencil-icon.png",
+      "_appLogoUrl": "https://polletto.github.io/MailStencil/",
+      "_appFaviconPath": "public/mailstencil-icon.png",
+      "_enableSearch": true,
+      "_enableNewTab": true,
+      "_appFooter": "MailStencil documentation. Licensed under the MIT License."
+    },
+    "sitemap": {
+      "baseUrl": "https://polletto.github.io/MailStencil/",
+      "changefreq": "weekly",
+      "priority": 0.5
+    }
+  }
+}

@@ -24,7 +24,7 @@ docker stop mailstencil-azurite
 ```
 
 In bash, use `MAILSTENCIL_AZURITE=1 dotnet test tests/MailStencil.AzureBlob.Tests -c Release --filter Category=Azurite`.
-The [GitHub Actions job](../.github/workflows/azurite.yml) starts the emulator, waits for its endpoint,
+The [GitHub Actions job](https://github.com/polletto/MailStencil/actions/workflows/azurite.yml) starts the emulator, waits for its endpoint,
 enables the suite and always cleans up. It can also be dispatched manually. The image is pinned to
 the digest exercised during the Milestone 7 local run; update it deliberately after testing a newer image.
 
