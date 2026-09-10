@@ -3,5 +3,7 @@
 TestResults/
 .vs/
 artifacts/
+website/_site/
+website/api/
 *.nupkg
 *.snupkg

@@ -1,0 +1,38 @@
+- name: Home
+  href: index.md
+- name: Getting Started
+  items:
+  - name: Installation
+    href: articles/getting-started/installation.md
+  - name: Quick Start
+    href: articles/getting-started/quick-start.md
+  - name: ASP.NET Core
+    href: ../docs/aspnet-core.md
+- name: Guides
+  items:
+  - name: FileSystem provider
+    href: ../docs/architecture.md#filesystem-provider
+  - name: Azure Blob provider
+    href: ../docs/architecture.md#azure-blob-provider
+  - name: Localization
+    href: ../docs/architecture.md#lookup-and-formatting
+  - name: Caching
+    href: ../docs/architecture.md#cache-semantics-and-freshness
+  - name: Validation
+    href: ../docs/architecture.md#ast-validation-and-supported-language
+  - name: Security
+    href: ../docs/architecture.md#threat-model-and-security-findings
+- name: Reference
+  items:
+  - name: API Reference
+    href: api/MailStencil.yml
+  - name: Public API compatibility
+    href: ../docs/public-api.md
+  - name: Architecture and limits
+    href: ../docs/architecture.md
+- name: Development
+  items:
+  - name: Azurite testing
+    href: ../docs/azurite-testing.md
+  - name: Releasing
+    href: ../docs/releasing.md
