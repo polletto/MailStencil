@@ -17,17 +17,26 @@ local-package consumer smoke tests, samples, and cross-platform CI. The four run
 together at one version. Test, sample, and tooling projects remain non-packable. Create a tag only after
 package contents and changelog are final; the intended first tag is `v0.1.0-preview.1`.
 
-No publishing workflow is included in this milestone. Before publishing, the owner must:
+The tag-only `.github/workflows/release.yml` workflow builds, tests, inspects and publishes the four
+packages from the immutable `v0.1.0-preview.1` tag. Its verification job has read-only repository access.
+Only its `publish` job uses the protected `release` environment and `id-token: write`; it exchanges the
+GitHub OIDC token for a short-lived NuGet API key immediately before pushing the verified artifacts.
+
+Before creating the tag, the owner must:
 
 1. confirm the repository's private vulnerability-reporting route and update `SECURITY.md` if needed;
 2. recheck package-ID ownership immediately before the first push;
-3. create a protected GitHub environment for release approval;
-4. configure NuGet.org trusted publishing for the exact owner, repository, workflow, and environment;
-5. grant `id-token: write` only to the publication job and exchange OIDC for a short-lived NuGet key
-   immediately before `dotnet nuget push`;
-6. publish immutable CI artifacts and never store a long-lived NuGet API key.
+3. create a GitHub environment named `release`, add required reviewers, prevent administrator bypass and
+   restrict deployment to tags matching `v*`;
+4. define the `NUGET_USER` configuration variable in that environment as the NuGet.org profile name;
+5. configure a NuGet.org trusted-publishing policy with owner `polletto`, repository `MailStencil`, workflow
+   file `release.yml`, environment `release`, and the intended NuGet.org package owner; restrict its scope
+   to the four MailStencil IDs (or the narrow `MailStencil.*` pattern) and allow publishing new packages and
+   package versions;
+6. verify the protected environment and trusted-publishing policy before creating the tag.
 
 The repository URL is `https://github.com/polletto/MailStencil`, and packages use the MIT license expression
 corresponding to the root `LICENSE` file.
 
 The normal CI and package jobs are intentionally nonpublishing and use read-only repository permissions.
+The release workflow cannot be dispatched manually and does not use or require a stored NuGet API key.
