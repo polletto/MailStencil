@@ -41,16 +41,27 @@ public sealed class DeveloperExperienceTests
     }
 
     [Theory]
-    [InlineData("MailStencil:CacheDuration", "-00:00:01")]
-    [InlineData("MailStencil:DefaultCulture", "invalid_culture_@")]
-    [InlineData("MailStencilFileSystem:BasePath", "")]
-    [InlineData("MailStencilFileSystem:MaxTemplateFileSize", "0")]
-    public async Task InvalidBoundConfigurationFailsStartup(string key, string value)
+    [InlineData("MailStencil:CacheDuration", "-00:00:01", typeof(MailStencilOptions))]
+    [InlineData("MailStencil:DefaultCulture", "invalid_culture_@", typeof(MailStencilOptions))]
+    [InlineData("MailStencilFileSystem:BasePath", "", typeof(FileSystemTemplateOptions))]
+    [InlineData("MailStencilFileSystem:MaxTemplateFileSize", "0", typeof(FileSystemTemplateOptions))]
+    public async Task InvalidBoundConfigurationFailsStartup(string key, string value, Type optionsType)
     {
-        await using var factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
-            builder.ConfigureLogging(logging => logging.ClearProviders())
-                .ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(new Dictionary<string, string?> { [key] = value })));
-        Assert.Throws<OptionsValidationException>(() => factory.CreateClient());
+        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+        {
+            ApplicationName = typeof(Program).Assembly.GetName().Name,
+            ContentRootPath = AppContext.BaseDirectory,
+            EnvironmentName = "Testing"
+        });
+        builder.WebHost.UseTestServer();
+        builder.Logging.ClearProviders();
+        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?> { [key] = value });
+        MailStencilSampleConfiguration.Configure(builder);
+
+        await using var app = builder.Build();
+        var exception = await Assert.ThrowsAsync<OptionsValidationException>(() => app.StartAsync());
+        Assert.Equal(optionsType, exception.OptionsType);
+        Assert.NotEmpty(exception.Failures);
     }
 
     [Theory]

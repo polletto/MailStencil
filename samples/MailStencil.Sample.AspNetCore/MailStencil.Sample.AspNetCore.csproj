@@ -6,5 +6,6 @@
     <ProjectReference Include="../../src/MailStencil.FileSystem/MailStencil.FileSystem.csproj" />
     <ProjectReference Include="../../src/MailStencil.AzureBlob/MailStencil.AzureBlob.csproj" />
     <Content Include="Templates/**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <InternalsVisibleTo Include="MailStencil.Sample.AspNetCore.Tests" />
   </ItemGroup>
 </Project>

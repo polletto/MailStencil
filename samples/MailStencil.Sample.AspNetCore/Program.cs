@@ -4,18 +4,7 @@ using MailStencil.AzureBlob;
 using MailStencil.FileSystem;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMailStencil().AddScribanRenderer()
-    .AddFileSystemTemplateReader(_ => { });
-builder.Services.AddOptions<MailStencilOptions>()
-    .Bind(builder.Configuration.GetSection("MailStencil")).ValidateOnStart();
-builder.Services.AddOptions<FileSystemTemplateOptions>()
-    .Bind(builder.Configuration.GetSection("MailStencilFileSystem"))
-    .PostConfigure(options =>
-    {
-        // Keep empty configuration invalid; resolve relative paths against the application, not process cwd.
-        if (!string.IsNullOrWhiteSpace(options.BasePath))
-            options.BasePath = Path.GetFullPath(options.BasePath, builder.Environment.ContentRootPath);
-    }).ValidateOnStart();
+MailStencilSampleConfiguration.Configure(builder);
 
 var app = builder.Build();
 app.MapGet("/preview/order-confirmation", async (IEmailTemplateService templates, string? culture, CancellationToken cancellationToken) =>
