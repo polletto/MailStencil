@@ -1,11 +1,22 @@
 # MailStencil
 
-MailStencil is a storage-agnostic, strongly typed email-template library for .NET 10. It separates
+**Storage-agnostic, strongly typed email templates for .NET.**
+
+MailStencil is an email-template library for .NET 10. It separates
 template storage, static validation, rendering, and runtime orchestration so applications can choose a
 read-only FileSystem or Azure Blob source without coupling model contracts to storage.
 
 The `0.1.0-preview.1` packages are a release candidate and have not been published to NuGet.org.
-MailStencil renders template content; it does not send email.
+APIs may still evolve before 1.0. MailStencil renders template content; it does **not** send email.
+
+The runtime pipeline is:
+
+```text
+Retrieve -> Validate -> Cache -> Render
+```
+
+The cache reuses successfully retrieved source snapshots; validation and rendering still run for each
+request.
 
 ## Packages
 
@@ -16,7 +27,9 @@ MailStencil renders template content; it does not send email.
 | `MailStencil.FileSystem` | Restrictive read-only UTF-8 filesystem provider |
 | `MailStencil.AzureBlob` | Read-only Azure Blob provider using an application-owned SDK client |
 
-For a FileSystem application, install:
+## Installation
+
+The packages are not published yet. These are the intended commands after publication. For FileSystem:
 
 ```sh
 dotnet add package MailStencil.Core --version 0.1.0-preview.1
@@ -24,8 +37,13 @@ dotnet add package MailStencil.Scriban --version 0.1.0-preview.1
 dotnet add package MailStencil.FileSystem --version 0.1.0-preview.1
 ```
 
-Use `MailStencil.AzureBlob` instead of `MailStencil.FileSystem` for Azure Blob Storage. These commands
-require a local feed containing the release-candidate packages until they are published.
+For Azure Blob Storage:
+
+```sh
+dotnet add package MailStencil.Core --version 0.1.0-preview.1
+dotnet add package MailStencil.Scriban --version 0.1.0-preview.1
+dotnet add package MailStencil.AzureBlob --version 0.1.0-preview.1
+```
 
 ## Quick start
 
@@ -47,17 +65,29 @@ using var provider = new ServiceCollection()
     .BuildServiceProvider();
 
 var templates = provider.GetRequiredService<IEmailTemplateService>();
-var result = await templates.RenderAsync(
+var result = await templates.RenderAsync<OrderConfirmationModel>(
     "order-confirmation",
-    new OrderModel("MS-123", "Ada & friends"));
+    new OrderConfirmationModel
+    {
+        CustomerName = "Ada & friends",
+        OrderNumber = "MS-123",
+        Total = 42.50m
+    });
 
 Console.WriteLine(result.Subject);
 
-public sealed record OrderModel(string OrderNumber, string CustomerName);
+public sealed class OrderConfirmationModel
+{
+    public required string CustomerName { get; init; }
+    public required string OrderNumber { get; init; }
+    public decimal Total { get; init; }
+}
 ```
 
 ```scriban
-Order {{ order_number }} for {{ customer_name }}
+Hello {{ customer_name }}
+Order {{ order_number }} totals {{ total }}
+<p>Hello {{ customer_name | html.escape }}</p>
 ```
 
 The declared generic model type is authoritative. MailStencil projects only its public readable
@@ -70,7 +100,7 @@ Resolve `ITemplateValidator` to validate unsaved content against the same declar
 the renderer:
 
 ```csharp
-var result = await validator.ValidateAsync<OrderModel>(content, cancellationToken);
+var result = await validator.ValidateAsync<OrderConfirmationModel>(content, cancellationToken);
 if (!result.IsValid)
 {
     foreach (var diagnostic in result.Diagnostics)
@@ -82,11 +112,20 @@ Invalid syntax or members produce structured diagnostics. `ITemplateRenderer` th
 `TemplateValidationException` for static validation failures and `TemplateRenderingException` for model
 projection or execution failures. Cancellation remains `OperationCanceledException`.
 
-## Localization and caching
+## Localization
 
 `IEmailTemplateService` follows `CultureInfo.Parent` from the requested or configured culture to the
-default variant. Formatting keeps the original requested culture even when content falls back. `null`
+default variant. For example:
+
+```text
+it-IT -> it -> default
+```
+
+Lookup culture and render formatting culture are related but distinct. Formatting keeps the original
+requested culture even when template content falls back, so numbers use the requested culture. `null`
 culture means invariant formatting and the default storage variant.
+
+## Caching
 
 Successful exact source snapshots use a five-minute absolute in-process cache by default. Set
 `CacheDuration` to `TimeSpan.Zero` to disable it. Null reads, rendered output, models, diagnostics, and
@@ -97,9 +136,12 @@ exceptions are not cached. Concurrent cold requests may perform duplicate reads.
 Each exact variant is a directory containing `subject.txt` and at least one of `body.html` or `body.txt`:
 
 ```text
-templates/order-confirmation/default/subject.txt
-templates/order-confirmation/default/body.html
-templates/order-confirmation/it/body.txt
+Templates/
+  order-confirmation/
+    default/
+      subject.txt
+      body.html
+      body.txt
 ```
 
 The provider enforces bounded UTF-8 reads, restrictive identifiers, exact-case lookup, containment, and
@@ -124,6 +166,11 @@ services.AddMailStencil()
 ```
 
 Each exact variant is one blob at `<prefix>/<name>/<culture-or-default>/template.json`:
+
+```text
+mailstencil/order-confirmation/default/template.json
+mailstencil/order-confirmation/it/template.json
+```
 
 ```json
 {
@@ -161,6 +208,9 @@ exception objects are excluded from MailStencil-generated logs.
 - [Console sample](samples/MailStencil.Sample.Console)
 - [ASP.NET Core sample](samples/MailStencil.Sample.AspNetCore)
 
+.NET isolated Azure Functions can use the same registrations through standard Microsoft dependency
+injection; MailStencil does not require an ASP.NET Core request pipeline.
+
 Build with the SDK selected by `global.json`:
 
 ```sh
@@ -176,5 +226,4 @@ logical version management, distributed caching, S3, Google storage providers, C
 HTML escaping, trimming guarantees, and Native AOT guarantees are outside this preview.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes and [SECURITY.md](SECURITY.md) for
-vulnerability-reporting guidance. A project license and public repository URL have not yet been selected;
-both must be resolved before publication.
+vulnerability-reporting guidance. MailStencil is licensed under the [MIT License](LICENSE).

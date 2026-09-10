@@ -1,4 +1,4 @@
-# MailStencil architecture — Milestone 8
+# MailStencil architecture — first public prerelease candidate
 
 ## Scope and structure
 
@@ -25,8 +25,8 @@ samples/
   MailStencil.Sample.AspNetCore/      Working minimal API, configuration and localized templates
 ```
 
-Core, Scriban and FileSystem are packable; final NuGet metadata, license, SourceLink, release automation and
-package validation remain Milestone 9. Core has no Scriban/cloud SDK dependency. Scriban references
+Core, Scriban, FileSystem and AzureBlob are packable with MIT license and repository metadata; release
+automation and publication remain intentionally absent. Core has no Scriban/cloud SDK dependency. Scriban references
 Core and pins Scriban 7.4.0, the stable 7.4.x package verified for this milestone. Sources consulted:
 [NuGet 7.4.0](https://www.nuget.org/packages/Scriban/7.4.0),
 [Scriban safe runtime](https://scriban.github.io/docs/runtime/safe-runtime/), and the source shipped
@@ -1068,11 +1068,12 @@ storage layout, or logging policy.
 
 `global.json` selects SDK 10.0.401 with `latestFeature` roll-forward. Local developer builds stay
 deterministic while compatible .NET 10 feature-band servicing remains possible. `ContinuousIntegrationBuild`
-is enabled only when the CI environment property is true. Repository/project URLs and license metadata are
-deliberately absent because this working repository has no commit, remote, or license file; inventing them
-would make the artifacts misleading. A real remote, initial commit, deliberate license, and verified
-security contact are publication blockers. Source Link is SDK-provided once sources are committed and a
-real repository URL exists; the current uncommitted candidate cannot claim usable source navigation.
+is enabled only when the CI environment property is true. Package metadata uses the actual
+`https://github.com/polletto/MailStencil.git` origin and its project page. All packages use the MIT license
+expression; the root license names Simone Rossi as the 2026 copyright holder. The SDK-provided Source Link
+integration maps deterministic source paths to the real repository and current commit without an additional
+Source Link package. Release artifacts must be rebuilt after these metadata changes are committed so the
+published source hash and package contents describe the same tree.
 
 Normal CI runs restore, Release build, and the complete non-Azurite test suite on Windows, Ubuntu, and
 macOS. A nonpublishing package job audits dependencies, packs once, inspects package identities, content,
@@ -1109,13 +1110,12 @@ graph with an application-owned client without network access. The compiled 115-
 The vulnerability audit found no known direct or transitive vulnerability. No production dependency is
 deprecated. The xunit 2.9.3 test stack remains marked Legacy, and the outdated audit still reports the
 previously reviewed Microsoft.Extensions 10.0.12 servicing updates plus test-tool major updates; no package
-was upgraded solely to be latest. CI now targets Windows, Ubuntu, and macOS, but hosted execution cannot be
-claimed until a real remote exists and runs the workflow.
+was upgraded solely to be latest. CI targets Windows, Ubuntu, and macOS. Windows and Ubuntu hosted jobs
+pass; the macOS-only deferred-host test-infrastructure failure was corrected by testing direct host startup
+and awaits hosted rerun confirmation.
 
-The candidate is **not ready to publish**. Blocking items are a deliberately chosen license, a real public
-repository and initial commit, truthful package project/repository URLs, usable Source Link mappings,
-verified private security reporting, and a successful hosted cross-platform CI run. Package IDs appeared
-available on 2026-09-10 but are not reserved. Recommended follow-up is to resolve those ownership choices,
-rerun all audits/pack/smokes from a clean commit, inspect Source Link against that commit, then configure a
-protected trusted-publishing workflow. The test-only xunit v3 migration and nonsecurity 10.0.12 servicing
-updates remain normal follow-up work rather than publication blockers.
+MIT licensing, the public repository, and truthful package URLs are now configured. Remaining publication
+checks are a successful hosted macOS rerun, verified Source Link against the final commit, a confirmed
+private security-reporting route, and trusted-publishing configuration. Package IDs appeared available on
+2026-09-10 but are not reserved and must be rechecked immediately before publication. The test-only xunit
+v3 migration and nonsecurity 10.0.12 servicing updates remain normal follow-up work rather than blockers.

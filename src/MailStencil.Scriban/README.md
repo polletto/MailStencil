@@ -21,3 +21,6 @@ share one internal model schema. No storage access, fallback, caching or email s
 The supported language is intentionally restricted: no include, eval, dynamic invocation, CLR method
 access, or model mutation. MailStencil does not automatically HTML-escape values; use `html.escape` for
 untrusted values inserted into an HTML body.
+
+See the [MailStencil repository](https://github.com/polletto/MailStencil) for complete setup,
+storage-provider registration, security limits, and samples.

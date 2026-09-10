@@ -17,3 +17,6 @@ email and contains no storage provider or template engine.
 
 MailStencil does not automatically sanitize rendered content or email headers. Applications must escape
 untrusted HTML values and enforce the header policy required by their email transport.
+
+Project documentation and samples are available in the
+[MailStencil repository](https://github.com/polletto/MailStencil).
