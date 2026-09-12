@@ -26,6 +26,16 @@ Retrieve -> Validate -> Cache -> Render
 The cache reuses successfully retrieved source snapshots; validation and rendering still run for each
 request.
 
+## Why MailStencil?
+
+MailStencil fits applications whose templates live outside application code and deployment, while still
+benefiting from validation against a declared `TModel`, culture fallback, source caching, and pluggable
+read-only storage. Razor or Blazor-based templates favor compile-time checking and IDE support when
+templates can ship with the application; raw Scriban may be enough when only rendering is needed.
+
+[Read the decision guide](https://polletto.github.io/MailStencil/articles/why-mailstencil.html) for a
+technical comparison and the boundary between rendering and email delivery.
+
 ## Packages
 
 | Package | Purpose | NuGet |

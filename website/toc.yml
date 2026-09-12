@@ -2,6 +2,8 @@
   href: index.md
 - name: Getting Started
   items:
+  - name: Why MailStencil?
+    href: articles/why-mailstencil.md
   - name: Installation
     href: articles/getting-started/installation.md
   - name: Quick Start
