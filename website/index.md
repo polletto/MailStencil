@@ -16,12 +16,16 @@ MailStencil is a .NET 10 library that retrieves templates from pluggable storage
 against strongly typed model contracts, caches source templates, and renders them with Scriban.
 It returns rendered content and does not send email.
 
+[See when MailStencil fits](articles/why-mailstencil.md) compared with Razor or Blazor-based templates
+and using Scriban directly.
+
 ```text
 Retrieve -> Validate -> Cache -> Render
 ```
 
 <div class="mailstencil-actions">
   <a class="btn btn-primary" href="articles/getting-started/installation.md">Get Started</a>
+  <a class="btn btn-outline-primary" href="articles/why-mailstencil.md">Why MailStencil?</a>
   <a class="btn btn-outline-primary" href="api/MailStencil.yml">API Reference</a>
   <a class="btn btn-outline-primary" href="https://www.nuget.org/packages/MailStencil.Core">NuGet</a>
   <a class="btn btn-outline-primary" href="https://github.com/polletto/MailStencil">GitHub</a>
